@@ -16,6 +16,7 @@ bounds_index = minmax.split(',')
 # Determines bounds
 if len(bounds_index) != 2 or bounds_index[0] == '' or float(bounds_index[0]) == float(bounds_index[1]):
     print('Error in bounds input!\nTerminating.')
+    input('Press enter to exit.')
     exit()
 elif float(bounds_index[0]) < float(bounds_index[1]):
     minZ = float(bounds_index[0])
@@ -32,8 +33,12 @@ root.attributes("-topmost", True)
 file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select Gromacs Coordinate File",
                                        filetypes=[("GRO Coordinate File", "*.gro")])
 
+outfile_path = filedialog.asksaveasfilename(initialdir=os.getcwd(), title="Position Restraints File",
+                                       filetypes=[("GRO Include Topology", "*.itp")])
+
 if file_path == '':
     print('No GRO file selected!\nTerminating.')
+    input('Press enter to exit.')
     exit()
 else:
     print(os.path.basename(file_path), 'loaded!')
@@ -75,8 +80,10 @@ posres_index.insert(0, '[ position_restraints ]')
 if path.exists('posres.itp'):
     os.remove('posres.itp')
 
-with open('posres.itp', 'w') as outfile:
+with open(outfile_path, 'w') as outfile:
     for item in posres_index:
         outfile.write(("%s\n" % item))
 
 print('Position restraint file written!')
+
+input('Press enter to exit.')
